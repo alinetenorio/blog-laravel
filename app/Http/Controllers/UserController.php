@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
+use App\User;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,9 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        $categories = Category::all();
+        $users = User::all();
 
-        return view('listCategories', ['categories'=>$categories]);
+        return view('listUsers', ['users'=>$users]);
     }
 
     /**
@@ -28,7 +28,7 @@ class CategoryController extends Controller
     public function create()
     {
         //
-        return view('createCategory');
+        return view('createUser');
     }
 
     /**
@@ -40,60 +40,58 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
-        $category = new Category();
 
-        $category['title'] = $request->title;
-
-        $category->save();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Category  $category
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show(User $user)
     {
         //
+        return view('showUser', ['user'=>$user]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Category  $category
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(User $user)
     {
         //
-        return view('editCategory');
+        return view('editUser', ['user'=>$user]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Category  $category
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, User $user)
     {
         //
-        $category['title'] = $request->title;
-
-        $category->save();
+        $user['name'] = $request->name;
+        $user['email'] = $request->email;
+        $user['password'] = Hash::make($request->password);
+        $user['permission'] =$request->permission;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Category  $category
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(User $user)
     {
         //
-        $category->delete();
+        $user->delete();
     }
 }

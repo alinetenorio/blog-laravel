@@ -12,9 +12,12 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($post)
     {
         //
+        $comments = Comment::where('post', $post)->get();
+
+        return $comments;
     }
 
     /**
@@ -33,9 +36,14 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Post $post)
     {
         //
+        $comment = new Comment();
+        $comment['author'] = $request->author;
+        $comment['content'] = $request->content;
+
+        $post->comments()->save($comment);
     }
 
     /**
@@ -70,6 +78,10 @@ class CommentController extends Controller
     public function update(Request $request, Comment $comment)
     {
         //
+        $comment['author'] = $request->author;
+        $comment['content'] = $request->content;
+
+        $post->comments()->save($comment);
     }
 
     /**
@@ -81,5 +93,6 @@ class CommentController extends Controller
     public function destroy(Comment $comment)
     {
         //
+        $comment->delete();
     }
 }

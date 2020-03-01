@@ -15,6 +15,9 @@ class TagController extends Controller
     public function index()
     {
         //
+        $tags = Tag::all();
+
+        return view('listTags', ['tags'=>$tags]);
     }
 
     /**
@@ -25,6 +28,7 @@ class TagController extends Controller
     public function create()
     {
         //
+        return view('createTag');
     }
 
     /**
@@ -36,6 +40,11 @@ class TagController extends Controller
     public function store(Request $request)
     {
         //
+        $tag = new Tag();
+
+        $tag['title'] = $request->title;
+
+        $tag->save();
     }
 
     /**
@@ -58,6 +67,7 @@ class TagController extends Controller
     public function edit(Tag $tag)
     {
         //
+        return view('editTag');
     }
 
     /**
@@ -70,6 +80,9 @@ class TagController extends Controller
     public function update(Request $request, Tag $tag)
     {
         //
+        $tag['title'] = $request->title;
+
+        $tag->save();
     }
 
     /**
@@ -81,5 +94,6 @@ class TagController extends Controller
     public function destroy(Tag $tag)
     {
         //
+        $tag->delete();
     }
 }

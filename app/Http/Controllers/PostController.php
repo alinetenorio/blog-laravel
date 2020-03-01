@@ -15,6 +15,9 @@ class PostController extends Controller
     public function index()
     {
         //
+        $posts = Post::all();
+
+        return view('listPosts', ['posts' => $posts]);
     }
 
     /**
@@ -25,6 +28,7 @@ class PostController extends Controller
     public function create()
     {
         //
+        return view('createPost');
     }
 
     /**
@@ -36,6 +40,26 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+        $post = new Post();
+
+        $post['title'] = $request->title;
+        $post['content'] = $request->content;
+        $post['author'] = Auth::id();
+        $post['category'] = $request->category;
+
+        $post->save();
+
+        /*
+        //TAG
+        $tag = Tag::find($request)
+        $post->tags()->save
+        $post_tag = new PostTag();
+        $post_tag['post'] = $post['id'];
+        $post_tag['tag'] = $request->tag;
+
+        $post_tag->save();
+        */
+
     }
 
     /**
@@ -47,6 +71,11 @@ class PostController extends Controller
     public function show(Post $post)
     {
         //
+        $comments = Comment::index($post);
+        return view('showPost', [
+            'post'=>$post,
+            'comments' => $comments
+            ]);
     }
 
     /**
@@ -58,6 +87,10 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         //
+       
+        return view('editPost', [
+            'post'=>$post
+            );
     }
 
     /**
@@ -70,6 +103,12 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         //
+        $post['title'] = $request->title;
+        $post['content'] = $request->content;
+        $post['author'] = Auth::id();
+        $post['category'] = $request->category;
+
+        $post->save();
     }
 
     /**
@@ -81,5 +120,6 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+        $post->delete();
     }
 }
