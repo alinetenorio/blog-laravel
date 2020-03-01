@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Post;
 use Illuminate\Http\Request;
 
@@ -40,6 +41,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+        //dd($request);
         $post = new Post();
 
         $post['title'] = $request->title;

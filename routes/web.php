@@ -11,15 +11,17 @@
 |
 */
 
-/*Route::get('/', function () {
+Route::get('/', function () {
     return view('welcome');
-});*/
+});
 
+/*
 Route::get('/', function() {
     return response()->json([
      'stuff' => phpinfo()
     ]);
  });
+ */
 
  Route::resource('post', 'PostController');
  Route::resource('comment', 'CommentController');
