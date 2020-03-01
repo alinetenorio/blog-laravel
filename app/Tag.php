@@ -12,4 +12,10 @@ class Tag extends Model
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = Str::slug($value);
     }
+
+    //RELATIONSHIPS
+
+    public function posts(){
+        return $this->belongsToMany(Post::class, 'posts_tags', 'tag', 'post');
+    }
 }

@@ -12,4 +12,22 @@ class Post extends Model
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = Str::slug($value);
     }
+
+    //RELATIONSHIPS
+
+    public function user(){
+        return $this->belongsTo(User::class, 'author', 'id');
+    }
+
+    public function comment(){
+        return $this->hasMany(Comment::class, 'post', 'id');
+    }
+
+    public function category(){
+        return $this->belongTo(Category::class, 'category', 'id');
+    }
+
+    public function tags(){
+        return $this->belongsToMany(Tag::class, 'posts_tags', 'post', 'tag');
+    }
 }

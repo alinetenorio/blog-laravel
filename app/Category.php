@@ -12,4 +12,10 @@ class Category extends Model
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = Str::slug($value);
     }
+
+    //RELATIONSHIPS
+
+    public function post(){
+        return $this->hasMany(Post::class, 'category', 'id');
+    }
 }
