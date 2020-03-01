@@ -90,7 +90,7 @@ class PostController extends Controller
        
         return view('editPost', [
             'post'=>$post
-            );
+        ]);
     }
 
     /**
