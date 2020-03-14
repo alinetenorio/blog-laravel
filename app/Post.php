@@ -17,15 +17,15 @@ class Post extends Model
     //RELATIONSHIPS
 
     public function user(){
-        return $this->belongsTo(User::class, 'author', 'id');
+        return $this->belongsTo(User::class, 'author_id', 'id');
     }
 
     public function comments(){
-        return $this->hasMany(Comment::class, 'post', 'id');
+        return $this->hasMany(Comment::class, 'post_id', 'id');
     }
 
     public function category(){
-        return $this->belongTo(Category::class, 'category', 'id');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
     public function tags(){

@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use Notifiable;
+    
 
     /**
      * The attributes that are mass assignable.
@@ -39,8 +40,9 @@ class User extends Authenticatable
 
 
     //RELATIONSHIPS
+
     public function post(){
-        return $this->hasMany(Post::class, 'author', 'id');
+        return $this->hasMany(Post::class, 'author_id', 'id');
     }
 
 

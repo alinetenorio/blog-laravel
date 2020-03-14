@@ -9,7 +9,7 @@ class Comment extends Model
     //RELATIONSHIPS
 
     public function post(){
-        return $this->belongsTo(Post::class, 'post', 'id');
+        return $this->belongsTo(Post::class, 'post_id', 'id');
     }
 
 

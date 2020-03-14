@@ -42,7 +42,7 @@ class PostController extends Controller
     {
         //
         //dd($request);
-        $post = new Post();
+       /* $post = new Post();
 
         $post['title'] = $request->title;
         $post['content'] = $request->content;
@@ -50,17 +50,15 @@ class PostController extends Controller
         $post['category'] = $request->category;
 
         $post->save();
-
-        /*
-        //TAG
-        $tag = Tag::find($request)
-        $post->tags()->save
-        $post_tag = new PostTag();
-        $post_tag['post'] = $post['id'];
-        $post_tag['tag'] = $request->tag;
-
-        $post_tag->save();
         */
+
+        
+        //TAG
+        $post=Post::find(2);
+       // dd($request, $post);
+        $post->tags()->attach($request->tag);
+    
+        
 
     }
 

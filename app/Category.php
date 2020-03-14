@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 
 class Category extends Model
@@ -17,6 +18,6 @@ class Category extends Model
     //RELATIONSHIPS
 
     public function post(){
-        return $this->hasMany(Post::class, 'category', 'id');
+        return $this->hasMany(Post::class, 'category_id', 'id');
     }
 }

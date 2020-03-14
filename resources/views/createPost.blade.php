@@ -6,6 +6,8 @@
     content: <input name='content'/><br/>
     category: <input name='category'/><br/>
 
+    tag:<input name='tag'/><br/>
+
     <input type='submit' value='add'>
 
 
