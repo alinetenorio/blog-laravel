@@ -17,7 +17,7 @@ class Category extends Model
 
     //RELATIONSHIPS
 
-    public function post(){
+    public function posts(){
         return $this->hasMany(Post::class, 'category_id', 'id');
     }
 }

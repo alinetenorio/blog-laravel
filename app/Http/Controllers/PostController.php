@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Post;
 use Illuminate\Http\Request;
+use App\Category;
+use App\Tag;
 
 class PostController extends Controller
 {
@@ -40,25 +42,23 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        //dd($request);
-       /* $post = new Post();
+        
+        //dd(Auth::id());
+        $post = new Post();
 
         $post['title'] = $request->title;
         $post['content'] = $request->content;
-        $post['author'] = Auth::id();
-        $post['category'] = $request->category;
-
-        $post->save();
-        */
-
         
+        $post['author_id'] = Auth::id();
+
+        $category = Category::find($request->category);
+        $category->posts()->save($post);
+
         //TAG
-        $post=Post::find(2);
-       // dd($request, $post);
-        $post->tags()->attach($request->tag);
+        $tag = Tag::find($request->tag1);
+        $post->tags()->attach($tag);
     
-        
+        $post->save();
 
     }
 
@@ -71,10 +71,9 @@ class PostController extends Controller
     public function show(Post $post)
     {
         //
-        $comments = Comment::index($post);
+        
         return view('showPost', [
             'post'=>$post,
-            'comments' => $comments
             ]);
     }
 
@@ -87,6 +86,8 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         //
+        //$tags = $post->tags;
+       // dd($tags[0]->title);
        
         return view('editPost', [
             'post'=>$post
