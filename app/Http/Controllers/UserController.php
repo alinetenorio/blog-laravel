@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Hash;
 
 class UserController extends Controller
 {
@@ -28,7 +29,7 @@ class UserController extends Controller
     public function create()
     {
         //
-        return view('createUser');
+       
     }
 
     /**
@@ -40,7 +41,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-        echo "vixe";
+       
     }
 
     /**
@@ -52,7 +53,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         //
-        return view('showUser', ['user'=>$user]);
+        
     }
 
     /**
@@ -64,7 +65,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         //
-        return view('editUser', ['user'=>$user]);
+       
     }
 
     /**
@@ -81,6 +82,8 @@ class UserController extends Controller
         $user['email'] = $request->email;
         $user['password'] = Hash::make($request->password);
         $user['permission'] =$request->permission;
+
+        $user->save();
     }
 
     /**

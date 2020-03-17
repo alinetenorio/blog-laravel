@@ -3,13 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 
 class Tag extends Model
 {
     //
 
-    public function setAttributeTitle($value){
+    public function setTitleAttribute($value){
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = Str::slug($value);
     }

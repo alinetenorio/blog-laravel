@@ -67,7 +67,7 @@ class TagController extends Controller
     public function edit(Tag $tag)
     {
         //
-        return view('editTag');
+      
     }
 
     /**
@@ -94,6 +94,7 @@ class TagController extends Controller
     public function destroy(Tag $tag)
     {
         //
+        $tag->posts()->detach();
         $tag->delete();
     }
 }

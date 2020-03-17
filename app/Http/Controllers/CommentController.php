@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\Post;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -12,12 +13,10 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($post)
+    public function index()
     {
         //
-        $comments = Comment::where('post', $post)->get();
-
-        return $comments;
+      
     }
 
     /**
@@ -36,13 +35,15 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Post $post)
+    public function store(Request $request)
     {
         //
+        //dd($request);
         $comment = new Comment();
         $comment['author'] = $request->author;
         $comment['content'] = $request->content;
 
+        $post = Post::find($request->post_id);
         $post->comments()->save($comment);
     }
 
@@ -79,10 +80,14 @@ class CommentController extends Controller
     public function update(Request $request, Comment $comment)
     {
         //
-        $comment['author'] = $request->author;
+        
+
         $comment['content'] = $request->content;
 
-        $post->comments()->save($comment);
+        $post = Post::find($request->post_id);
+        $comment->post()->associate($post);
+
+        $comment->save();
     }
 
     /**
@@ -94,6 +99,7 @@ class CommentController extends Controller
     public function destroy(Comment $comment)
     {
         //
+        $comment->post()->dissociate();
         $comment->delete();
     }
 }
