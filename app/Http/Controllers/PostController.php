@@ -87,7 +87,7 @@ class PostController extends Controller
     {
         //
         //$tags = $post->tags;
-       // dd($tags[0]->title);
+        //dd($tags);
        
         return view('editPost', [
             'post'=>$post
@@ -104,10 +104,17 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         //
+       // dd($post);
         $post['title'] = $request->title;
         $post['content'] = $request->content;
-        $post['author'] = Auth::id();
-        $post['category'] = $request->category;
+        $post['author_id'] = Auth::id();
+
+        $category = Category::find($request->category);
+        $post->category()->associate($category);
+
+        $post->tags()->detach();
+        $tag = Tag::find($request->tag1);
+        $post->tags()->attach($tag);
 
         $post->save();
     }
@@ -120,7 +127,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->user()->dissociate();
+        $post->category()->dissociate();
+        $post->tags()->detach();
+        $post->comments()->delete();
         $post->delete();
     }
 }

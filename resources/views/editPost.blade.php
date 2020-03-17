@@ -8,9 +8,15 @@
 
     category: <input name='category' value="{{$post->category->id}}"/><br/>
 
-    @foreach ($post->tags as $tag)
-        tag:<input name='tag' value="{{$tag->id}}"/><br/>
-    @endforeach
+    @for ($i = 0; $i < 3; $i++)
+        @if ($post->tags->isNotEmpty() && $post->tags[$i] != null)
+            tag:<input name='tag{{$i+1}}' value="$post->tags[{{$i}}]->id }}"/><br/>    
+        @else
+            tag:<input name='tag{{$i+1}}' value=""/><br/>
+        @endif
+    @endfor
+    
+       
 
     <input type='submit' value='edit'>
 

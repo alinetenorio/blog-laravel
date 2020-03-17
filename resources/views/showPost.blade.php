@@ -11,3 +11,9 @@ category: {{$post->category->title}} <br/>
     author: {{$comment->author}} <br/>
     comment: {{$comment->content}} <br/>        
 @endforeach
+
+<form action="{{route('post.destroy', ['post'=>$post])}}" method="post">
+    @csrf
+    @method('delete')
+    <input type="submit" value="remover">
+</form>
