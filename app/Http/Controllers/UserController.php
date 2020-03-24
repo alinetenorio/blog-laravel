@@ -16,9 +16,9 @@ class UserController extends Controller
     public function index()
     {
         //
-        $users = User::all();
+        return $users = User::all();
 
-        return view('listUsers', ['users'=>$users]);
+        //return view('listUsers', ['users'=>$users]);
     }
 
     /**
@@ -89,7 +89,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User  $user
+     * @param  \App\Ugit sser  $user
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)

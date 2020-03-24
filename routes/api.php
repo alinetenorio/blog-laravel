@@ -16,3 +16,10 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResource('post', 'PostController');
+Route::apiResource('comment', 'CommentController');
+Route::apiResource('tag', 'TagController');
+Route::apiResource('category', 'CategoryController');
+Route::apiResource('user', 'UserController');
+
