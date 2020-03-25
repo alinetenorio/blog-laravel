@@ -21,5 +21,7 @@ Route::apiResource('post', 'PostController');
 Route::apiResource('comment', 'CommentController');
 Route::apiResource('tag', 'TagController');
 Route::apiResource('category', 'CategoryController');
+
+//not tested yet
 Route::apiResource('user', 'UserController');
 

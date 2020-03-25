@@ -49,7 +49,8 @@ class PostController extends Controller
         $post['title'] = $request->title;
         $post['content'] = $request->content;
         
-        $post['author_id'] = Auth::id();
+        //*Commented to test api
+        //$post['author_id'] = Auth::id();
 
         $category = Category::find($request->category);
         $category->posts()->save($post);
@@ -108,7 +109,9 @@ class PostController extends Controller
        // dd($post);
         $post['title'] = $request->title;
         $post['content'] = $request->content;
-        $post['author_id'] = Auth::id();
+
+        //*Commented to test api
+        //$post['author_id'] = Auth::id();
 
         $category = Category::find($request->category);
         $post->category()->associate($category);
