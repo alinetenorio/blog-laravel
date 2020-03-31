@@ -14,7 +14,14 @@ class ValidationController extends Controller
         return User::where('id', $id)->exists();
     }
 
-
+    public static function userIsAdmin($id){
+        $user = User::where('id', $id)->get()[0];
+        if($user->permission == 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 
 }

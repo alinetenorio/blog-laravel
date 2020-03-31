@@ -13,9 +13,11 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        return Comment::all();
+        
       
     }
 
@@ -49,12 +51,14 @@ class CommentController extends Controller
     {
         //
         
-        $comment['content'] = $request->content;
+        //$comment['content'] = $request->content;
 
-        $post = Post::find($request->post_id);
-        $comment->post()->associate($post);
+        //$post = Post::find($request->post_id);
+        //$comment->post()->associate($post);
 
-        $comment->save();
+        //$comment->save();
+
+        return 'Not available';
     }
 
     /**
@@ -63,10 +67,14 @@ class CommentController extends Controller
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy(Request $request, Comment $comment)
     {
         //
-        $comment->post()->dissociate();
-        $comment->delete();
+        if( ValidationController::userExists($request->header()['authorization'][0]) ){
+            $comment->post()->dissociate();
+            $comment->delete();
+        }else{
+            return 'Not authorized';
+        }
     }
 }

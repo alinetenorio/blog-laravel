@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
-use Hash, RegisterController;
+use Hash, App\Http\Controllers\Auth\RegisterController;
 
 class UserController extends Controller
 {
@@ -13,24 +13,20 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        return $users = User::all();
+        $id = $request->header()['authorization'][0];
+        if( ValidationController::userExists($id) &&
+            ValidationController::userIsAdmin($id) ){
 
-        //return view('listUsers', ['users'=>$users]);
+                return $users = User::all();
+        }else{
+            return "Not authorized";
+        }
+        
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-       
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -41,7 +37,19 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-       RegisterController.create($request);
+        $id = $request->header()['authorization'][0];
+        if( ValidationController::userExists($id) &&
+            ValidationController::userIsAdmin($id) ){
+                return User::create([
+                    'name' => $request['name'],
+                    'email' => $request['email'],
+                    'password' => Hash::make($request['password']),
+                    'permission' => $request['permission'] 
+                ]);
+        }else{
+            return "Not authorized";
+        }
+       
     }
 
     /**
@@ -56,17 +64,6 @@ class UserController extends Controller
         return $user;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
-       
-    }
 
     /**
      * Update the specified resource in storage.
@@ -77,11 +74,27 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
-        $user['name'] = $request->name;
-        $user['email'] = $request->email;
-        $user['password'] = Hash::make($request->password);
-        $user['permission'] =$request->permission;
+        
+        $id = $request->header()['authorization'][0];
+
+        //if user exists and is admin: he can edit everything
+        if( ValidationController::userExists($id) &&
+            ValidationController::userIsAdmin($id) ){
+                $user['name'] = $request->name;
+                $user['email'] = $request->email;
+                $user['password'] = Hash::make($request->password);
+                $user['permission'] =$request->permission;
+
+        }else if(ValidationController::userExists($id) &&
+            $id == $request->user->id){
+            //if user is contributor: he can only edit his profile,
+            //  except his permissions
+                $user['name'] = $request->name;
+                $user['email'] = $request->email;
+                $user['password'] = Hash::make($request->password);
+        }else{
+            return 'Not authorized';
+        }
 
         $user->save();
     }
@@ -92,9 +105,16 @@ class UserController extends Controller
      * @param  \App\Ugit sser  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
         //
-        $user->delete();
+        $id = $request->header()['authorization'][0];
+
+        if( ValidationController::userExists($id) &&
+            ValidationController::userIsAdmin($id) ){
+                $user->delete();
+        }else{
+            return 'Not authorized';
+        }
     }
 }

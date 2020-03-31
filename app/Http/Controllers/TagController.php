@@ -20,16 +20,7 @@ class TagController extends Controller
         //return view('listTags', ['tags'=>$tags]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-        return view('createTag');
-    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -40,11 +31,16 @@ class TagController extends Controller
     public function store(Request $request)
     {
         //
-        $tag = new Tag();
+        if( ValidationController::userExists($request->header()['authorization'][0]) ){
+            $tag = new Tag();
 
-        $tag['title'] = $request->title;
+            $tag['title'] = $request->title;
 
-        $tag->save();
+            $tag->save();
+        }else{
+            return "Not authorized";
+        }
+        
     }
 
     /**
@@ -56,19 +52,9 @@ class TagController extends Controller
     public function show(Tag $tag)
     {
         //
+        return $tag;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Tag  $tag
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Tag $tag)
-    {
-        //
-      
-    }
 
     /**
      * Update the specified resource in storage.
@@ -80,9 +66,14 @@ class TagController extends Controller
     public function update(Request $request, Tag $tag)
     {
         //
-        $tag['title'] = $request->title;
+        if( ValidationController::userExists($request->header()['authorization'][0]) ){
+            $tag['title'] = $request->title;
 
-        $tag->save();
+            $tag->save();
+        }else{
+            return "Not authorized";
+        }
+        
     }
 
     /**
@@ -91,10 +82,15 @@ class TagController extends Controller
      * @param  \App\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tag $tag)
+    public function destroy(Request $request, Tag $tag)
     {
         //
-        $tag->posts()->detach();
-        $tag->delete();
+        if( ValidationController::userExists($request->header()['authorization'][0]) ){
+            $tag->posts()->detach();
+            $tag->delete();
+        }else{
+            return "Not authorized";
+        }
+        
     }
 }
