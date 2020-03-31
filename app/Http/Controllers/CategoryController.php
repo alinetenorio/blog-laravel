@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ValidationController;
 
 class CategoryController extends Controller
 {
@@ -31,7 +32,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
-        if($request->header()['authorization'][0]){
+        if( ValidationController::userExists($request->header()['authorization'][0]) ){
             $category = new Category();
 
             $category['title'] = $request->title;
@@ -40,6 +41,8 @@ class CategoryController extends Controller
         }else{
             return "Not authorized";
         }
+
+
     }
 
     /**
@@ -66,9 +69,14 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         //
-        $category['title'] = $request->title;
+        if( ValidationController::userExists($request->header()['authorization'][0]) ){
+            $category['title'] = $request->title;
 
-        $category->save();
+             $category->save();
+        }else{
+            return "Not authorized";
+        }
+        
     }
 
     /**
@@ -77,10 +85,14 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Request $request, Category $category)
     {
         //
-    
-        $category->delete();
+        if( ValidationController::userExists($request->header()['authorization'][0]) ){
+            $category->delete();
+        }else{
+            return "Not authorized";
+        }
+       
     }
 }
