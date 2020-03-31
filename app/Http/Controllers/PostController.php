@@ -7,9 +7,11 @@ use App\Post;
 use Illuminate\Http\Request;
 use App\Category;
 use App\Tag;
+use App\Http\Controllers\ValidationController;
 
 class PostController extends Controller
 {
+   
     /**
      * Display a listing of the resource.
      *
@@ -18,21 +20,12 @@ class PostController extends Controller
     public function index()
     {
         //
-        return $posts = Post::all();
+        $posts = Post::all();
+        //$comments = 
 
-      //  return view('listPosts', ['posts' => $posts]);
+        return $posts;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-        return view('createPost');
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -43,23 +36,26 @@ class PostController extends Controller
     public function store(Request $request)
     {
         
-        //dd(Auth::id());
-        $post = new Post();
+        if( ValidationController::userExists($request->header()['authorization'][0]) ){
+            $post = new Post();
 
-        $post['title'] = $request->title;
-        $post['content'] = $request->content;
-        
-        //*Commented to test api
-        //$post['author_id'] = Auth::id();
-
-        $category = Category::find($request->category);
-        $category->posts()->save($post);
-
-        //TAG
-        $tag = Tag::find($request->tag1);
-        $post->tags()->attach($tag);
+            $post['title'] = $request->title;
+            $post['content'] = $request->content;
+            
+           
+            $post['author_id'] = $request->header()['authorization'][0];
     
-        $post->save();
+            $category = Category::find($request->category);
+            $category->posts()->save($post);
+    
+            //TAG
+            $tag = Tag::find($request->tag1);
+            $post->tags()->attach($tag);
+        
+            $post->save();
+        }else{
+                return "Not authorized";
+        }
 
     }
 
@@ -73,28 +69,10 @@ class PostController extends Controller
     {
         //
         return $post;
-        /*return view('showPost', [
-            'post'=>$post,
-            ]);
-        */
+       
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Post $post)
-    {
-        //
-        //$tags = $post->tags;
-        //dd($tags);
-       
-        return view('editPost', [
-            'post'=>$post
-        ]);
-    }
+   
 
     /**
      * Update the specified resource in storage.
@@ -107,20 +85,23 @@ class PostController extends Controller
     {
         //
        // dd($post);
-        $post['title'] = $request->title;
-        $post['content'] = $request->content;
+       if( ValidationController::userExists($request->header()['authorization'][0]) ){
+            $post['title'] = $request->title;
+            $post['content'] = $request->content;
 
-        //*Commented to test api
-        //$post['author_id'] = Auth::id();
+            $post['author_id'] = $request->header()['authorization'][0];
 
-        $category = Category::find($request->category);
-        $post->category()->associate($category);
+            $category = Category::find($request->category);
+            $post->category()->associate($category);
 
-        $post->tags()->detach();
-        $tag = Tag::find($request->tag1);
-        $post->tags()->attach($tag);
+            $post->tags()->detach();
+            $tag = Tag::find($request->tag1);
+            $post->tags()->attach($tag);
 
-        $post->save();
+            $post->save();
+       }else{
+            return "Not authorized";
+       }
     }
 
     /**
@@ -129,12 +110,18 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy(Request $request, Post $post)
     {
-        $post->user()->dissociate();
-        $post->category()->dissociate();
-        $post->tags()->detach();
-        $post->comments()->delete();
-        $post->delete();
+        if( ValidationController::userExists($request->header()['authorization'][0]) ){
+            $post->user()->dissociate();
+            $post->category()->dissociate();
+            $post->tags()->detach();
+            $post->comments()->delete();
+            $post->delete();
+        }else{
+            return "Not authorized";
+        }
     }
+
+
 }

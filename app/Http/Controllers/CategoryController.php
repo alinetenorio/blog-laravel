@@ -20,16 +20,7 @@ class CategoryController extends Controller
         //return view('listCategories', ['categories'=>$categories]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-        return view('createCategory');
-    }
+   
 
     /**
      * Store a newly created resource in storage.
@@ -40,11 +31,15 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
-        $category = new Category();
+        if($request->header()['authorization'][0]){
+            $category = new Category();
 
-        $category['title'] = $request->title;
+            $category['title'] = $request->title;
 
-        $category->save();
+            $category->save();
+        }else{
+            return "Not authorized";
+        }
     }
 
     /**
@@ -56,19 +51,10 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         //
+        return $category;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        //
-       
-    }
+    
 
     /**
      * Update the specified resource in storage.
