@@ -9,6 +9,6 @@
 
 ## RESTful API for blogs
 
-#### This project contains a API backend built with Laravel. Its use is focused on the basic operations of a blog.
+#### This project contains a backend API built with Laravel. Its use is focused on the basic operations of a blog.
 
 ##### Esse projeto contém uma API de backend construída em Laravel. O seu uso é voltado para as operações básicas de um blog.
